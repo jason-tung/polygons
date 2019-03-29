@@ -26,6 +26,6 @@ def calculate_normal(polygons, i):
     p2 = polygons[i + 2]
     a = [x1 - x0 for x1,x0 in zip(p1, p0)]
     b = [x2 - x0 for x2,x0 in zip(p2, p0)]
-    return cross_pod(a, b)
+    return cross_prod(a, b)
 def minus(a,b):
     return [k-v for k,v in zip(a,b)]
