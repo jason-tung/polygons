@@ -1,4 +1,4 @@
-from display import *
+from white_display import *
 from matrix import *
 from draw import *
 
@@ -143,12 +143,14 @@ def parse_file(fname, edges, polygons, transform, screen, color):
         elif line == 'clear':
             edges = []
             polygons = []
-
-        elif line == 'display' or line == 'save':
-            clear_screen(screen)
-            #print(color)
+        elif line == 'draw':
             draw_lines(edges, screen, color)
             draw_polygons(polygons, screen, color)
+        elif line == 'display' or line == 'save':
+            #clear_screen(screen)
+            #print(color)
+            #draw_lines(edges, screen, color)
+            #draw_polygons(polygons, screen, color)
             if line == 'display':
                 display(screen)
             else:

@@ -11,7 +11,7 @@ def add_polygon(polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2):
 
 def draw_polygons(polygons, screen, color):
     if len(polygons) < 3:
-        #print 'Need at least 3 points to polygon'
+        # print 'Need at least 3 points to polygon'
         return
     # print polygons
     point = 0
@@ -43,13 +43,12 @@ def add_box(polygons, x, y, z, width, height, depth):
     z1 = z - depth
 
     # front
-    add_polygon(polygons, x, y, z, x, y1, z, x1, y, z)
-    add_polygon(polygons,  x1, y1, z, x1, y, z, x, y1, z)
+    add_polygon(polygons, x, y, z, x, y1, z, x1, y1, z)
+    add_polygon(polygons, x1, y1, z, x1, y, z, x, y, z)
 
     # back
     add_polygon(polygons, x, y, z1, x1, y, z1, x, y1, z1)
     add_polygon(polygons, x1, y1, z1, x, y1, z1, x1, y, z1)
-
 
     # sides
     add_polygon(polygons, x, y, z, x1, y, z, x, y, z1)
@@ -59,7 +58,7 @@ def add_box(polygons, x, y, z, width, height, depth):
     add_polygon(polygons, x, y1, z, x, y1, z1, x1, y1, z)
 
     add_polygon(polygons, x, y1, z, x, y, z1, x, y1, z1)
-    add_polygon(polygons, x, y, z1, x, y1, z, x, y, z,)
+    add_polygon(polygons, x, y, z1, x, y1, z, x, y, z, )
 
     add_polygon(polygons, x1, y1, z1, x1, y, z1, x1, y1, z)
     add_polygon(polygons, x1, y, z, x1, y1, z, x1, y, z1)
@@ -117,7 +116,7 @@ def add_sphere(polygons, cx, cy, cz, r, step):
                             points[index + step][2])
 
 
-def generate_sphere( cx, cy, cz, r, step ):
+def generate_sphere(cx, cy, cz, r, step):
     points = []
 
     rot_start = 0
@@ -126,20 +125,20 @@ def generate_sphere( cx, cy, cz, r, step ):
     circ_stop = step
 
     for rotation in range(rot_start, rot_stop):
-        rot = rotation/float(step)
-        for circle in range(circ_start, circ_stop+1):
-            circ = circle/float(step)
+        rot = rotation / float(step)
+        for circle in range(circ_start, circ_stop + 1):
+            circ = circle / float(step)
 
             x = r * math.cos(math.pi * circ) + cx
-            y = r * math.sin(math.pi * circ) * math.cos(2*math.pi * rot) + cy
-            z = r * math.sin(math.pi * circ) * math.sin(2*math.pi * rot) + cz
+            y = r * math.sin(math.pi * circ) * math.cos(2 * math.pi * rot) + cy
+            z = r * math.sin(math.pi * circ) * math.sin(2 * math.pi * rot) + cz
 
             points.append([x, y, z])
-            #print 'rotation: %d\tcircle%d'%(rotation, circle)
+            # print 'rotation: %d\tcircle%d'%(rotation, circle)
     return points
 
 
-def add_torus(polygons, cx, cy, cz, r0, r1, step ):
+def add_torus(polygons, cx, cy, cz, r0, r1, step):
     points = generate_torus(cx, cy, cz, r0, r1, step)
 
     lat_start = 0
@@ -149,8 +148,8 @@ def add_torus(polygons, cx, cy, cz, r0, r1, step ):
     for longt in range(longt_start, longt_stop):
         index = longt
         add_point(points, points[index][0],
-                 points[index][1],
-                 points[index][2])
+                  points[index][1],
+                  points[index][2])
 
     for lat in range(lat_start, lat_stop):
         for longt in range(longt_start, longt_stop):
@@ -167,7 +166,8 @@ def add_torus(polygons, cx, cy, cz, r0, r1, step ):
                         points[index + step][1],
                         points[index + step][2])
 
-def generate_torus( cx, cy, cz, r0, r1, step ):
+
+def generate_torus(cx, cy, cz, r0, r1, step):
     points = []
     rot_start = 0
     rot_stop = step
@@ -175,13 +175,13 @@ def generate_torus( cx, cy, cz, r0, r1, step ):
     circ_stop = step
 
     for rotation in range(rot_start, rot_stop):
-        rot = rotation/float(step)
+        rot = rotation / float(step)
         for circle in range(circ_start, circ_stop):
-            circ = circle/float(step)
+            circ = circle / float(step)
 
-            x = math.cos(2*math.pi * rot) * (r0 * math.cos(2*math.pi * circ) + r1) + cx
-            y = r0 * math.sin(2*math.pi * circ) + cy
-            z = -1*math.sin(2*math.pi * rot) * (r0 * math.cos(2*math.pi * circ) + r1) + cz
+            x = math.cos(2 * math.pi * rot) * (r0 * math.cos(2 * math.pi * circ) + r1) + cx
+            y = r0 * math.sin(2 * math.pi * circ) + cy
+            z = -1 * math.sin(2 * math.pi * rot) * (r0 * math.cos(2 * math.pi * circ) + r1) + cz
 
             points.append([x, y, z])
     return points
@@ -204,26 +204,26 @@ def add_circle(points, cx, cy, cz, r, step):
 
 
 def add_curve(points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type):
-    xcoefs = generate_curve_coefs(x0, x1, x2, x3, curve_type)[0]
-    ycoefs = generate_curve_coefs(y0, y1, y2, y3, curve_type)[0]
-
-    i = 1
-    while i <= step:
-        t = float(i) / step
-        x = t * (t * (xcoefs[0] * t + xcoefs[1]) + xcoefs[2]) + xcoefs[3]
-        y = t * (t * (ycoefs[0] * t + ycoefs[1]) + ycoefs[2]) + ycoefs[3]
-        # x = xcoefs[0] * t*t*t + xcoefs[1] * t*t + xcoefs[2] * t + xcoefs[3]
-        # y = ycoefs[0] * t*t*t + ycoefs[1] * t*t + ycoefs[2] * t + ycoefs[3]
-
-        add_edge(points, x0, y0, 0, x, y, 0)
-        x0 = x
-        y0 = y
-        t += step
+    stepper = step
+    xc = generate_curve_coefs(x0, x1, x2, x3, curve_type)
+    yc = generate_curve_coefs(y0, y1, y2, y3, curve_type)
+    while stepper <= step + 1:
+        nx0 = 0
+        ny0 = 0
+        nx1 = 0
+        ny1 = 0
+        for x in range(4):
+            nx0 += xc[0][x] * stepper ** (3 - x)
+            ny0 += yc[0][x] * stepper ** (3 - x)
+            nx1 += xc[0][x] * (stepper - step) ** (3 - x)
+            ny1 += yc[0][x] * (stepper - step) ** (3 - x)
+        add_edge(points, nx0, ny0, 0, nx1, ny1, 0)
+        stepper += step
 
 
 def draw_lines(matrix, screen, color):
     if len(matrix) < 2:
-        #print 'Need at least 2 points to draw'
+        # print 'Need at least 2 points to draw'
         return
 
     point = 0

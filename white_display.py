@@ -17,8 +17,7 @@ def new_screen( width = XRES, height = YRES ):
         row = []
         screen.append( row )
         for x in range( width ):
-            screen[y].append( DEFAULT_COLOR[:])
-    #print(screen)
+            screen[y].append( DEFAULT_COLOR[:] )
     return screen
 
 def plot( screen, color, x, y ):
